@@ -1,0 +1,93 @@
+{
+  "name": "decipher-file-manager",
+  "displayName": "Decipher File Manager",
+  "description": "Manage FocusVision Decipher survey files from VS Code",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Other"],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "decipherPanel",
+          "title": "Decipher",
+          "icon": "media/decipher.svg"
+        }
+      ]
+    },
+    "views": {
+      "decipherPanel": [
+        {
+          "id": "decipherFilesView",
+          "name": "Survey Files",
+          "icon": "media/decipher.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "decipherSync.refresh",
+        "title": "Refresh Files",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "decipherSync.downloadFile",
+        "title": "Download from Decipher"
+      },
+      {
+        "command": "decipherSync.uploadFile",
+        "title": "Upload to Decipher"
+      },
+      {
+        "command": "decipherSync.setApiKey",
+        "title": "Decipher: Set API Key"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "decipherSync.refresh",
+          "when": "view == decipherFilesView",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "decipherSync.uploadFile",
+          "when": "!explorerResourceIsFolder",
+          "group": "decipher@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Decipher File Manager",
+      "properties": {
+        "decipherSync.serverUrl": {
+          "type": "string",
+          "default": "https://surveys.focusvision.com",
+          "description": "Base URL of the Decipher server (e.g. https://surveys.focusvision.com)"
+        },
+        "decipherSync.surveyPath": {
+          "type": "string",
+          "default": "",
+          "description": "Survey path on the server (e.g. selfserve/1a/123456)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.3.3"
+  }
+}
