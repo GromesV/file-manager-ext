@@ -106,13 +106,17 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                                 if (!uri) {
                                     return;
                                 }
-                                fs.mkdirSync(path.dirname(uri.fsPath), { recursive: true });
-                                fs.writeFileSync(uri.fsPath, contents);
+                                await vscode.workspace.fs.createDirectory(
+                                    vscode.Uri.file(path.dirname(uri.fsPath))
+                                );
+                                await vscode.workspace.fs.writeFile(uri, contents);
                                 await vscode.window.showTextDocument(uri);
                             } else {
-                                fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-                                fs.writeFileSync(targetPath, contents);
                                 const uri = vscode.Uri.file(targetPath);
+                                await vscode.workspace.fs.createDirectory(
+                                    vscode.Uri.file(path.dirname(targetPath))
+                                );
+                                await vscode.workspace.fs.writeFile(uri, contents);
                                 await vscode.window.showTextDocument(uri);
                             }
                         } catch (err) {
